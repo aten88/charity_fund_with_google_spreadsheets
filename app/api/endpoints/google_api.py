@@ -8,7 +8,7 @@ from app.services.google_api import (
     set_user_permissions,
     spreadsheets_update_value
 )
-from app.services.projects_donats_services import CharityProjectService
+from app.services.project_service import CharityProjectService
 
 router = APIRouter()
 

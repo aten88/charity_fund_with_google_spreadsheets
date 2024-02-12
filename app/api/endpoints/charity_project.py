@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.user import current_superuser
 from app.core.db import get_async_session
 from app.crud.charity_project import project_crud
-from app.services.projects_donats_services import CharityProjectService
+from app.services.project_service import CharityProjectService
 from app.schemas.charity_project import (
     CharityProjectCreate,
     CharityProjectDB,
