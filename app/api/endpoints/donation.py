@@ -28,7 +28,7 @@ async def create_donation(
 ):
     """ Сделать пожертвование. """
 
-    return await donation_service.create_donation(donation)
+    return await donation_service.create(donation)
 
 
 @router.get(

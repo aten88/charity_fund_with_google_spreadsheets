@@ -8,14 +8,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.db import get_async_session
 from app.crud.charity_project import project_crud
 from app.models.charity_project import CharityProject
-from app.models.donation import Donation
-
-from app.services.investment_service import investment_process
 from app.services.validators import (
     check_name, check_charity_project_exists,
     check_fully_invested, check_fully_and_invested_amounts,
 )
-from app.schemas.charity_project import CharityProjectCreate, CharityProjectUpdate
+from app.schemas.charity_project import CharityProjectUpdate
+from app.services.base import BaseService
 
 
 async def validate_full_amount(update_data, db_obj):
@@ -27,30 +25,12 @@ async def validate_full_amount(update_data, db_obj):
         )
 
 
-async def check_description(project_description: str):
-    """ Валидатор для проверки описания. """
-    if not project_description:
-        raise HTTPException(
-            status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-            detail='Описание проекта не может быть пустым!'
-        )
-
-
-class CharityProjectService:
+class CharityProjectService(BaseService):
     """ Класс-сервис для проектов. """
 
-    def __init__(self, session: AsyncSession = Depends(get_async_session)):
+    def __init__(self, session: AsyncSession = Depends(get_async_session), obj_type: str = "PROJECT"):
         self.session = session
-
-    async def create_charity_project(self, charity_project: CharityProjectCreate):
-        """ Метод создания проекта. """
-
-        await check_name(charity_project.name, self.session)
-        await check_description(charity_project.description)
-
-        new_project = await project_crud.create(charity_project, self.session)
-
-        return await investment_process(new_project, Donation, self.session)
+        self.obj_type = obj_type
 
     async def update_charity_project(self, project_id: int, obj_in: CharityProjectUpdate,):
         """ Метод обновления проекта. """

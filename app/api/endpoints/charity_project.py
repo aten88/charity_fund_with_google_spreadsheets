@@ -30,7 +30,7 @@ async def create_charity_project(
 
         Создает благотворительный проект.
     """
-    return await create_service.create_charity_project(charity_project)
+    return await create_service.create(charity_project)
 
 
 @router.get(
