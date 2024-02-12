@@ -28,8 +28,8 @@ class CharityProjectService:
         await check_description(charity_project.description, self.session)
 
         new_project = await project_crud.create(charity_project, self.session)
-        await investment_process(new_project, Donation, self.session)
-        return new_project
+
+        return await investment_process(new_project, Donation, self.session)
 
     async def update_charity_project(self, project_id: int, obj_in: CharityProjectUpdate,):
         """ Метод обновления проекта. """

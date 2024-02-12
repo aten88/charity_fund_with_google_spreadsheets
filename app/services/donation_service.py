@@ -26,6 +26,5 @@ class DonationService:
         new_donation = await donation_crud.create(
             donation, self.session, self.user
         )
-        await investment_process(new_donation, CharityProject, self.session)
 
-        return new_donation
+        return await investment_process(new_donation, CharityProject, self.session)

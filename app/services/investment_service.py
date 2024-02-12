@@ -50,3 +50,4 @@ async def investment_process(
     session.add(new_obj)
     await session.commit()
     await session.refresh(new_obj)
+    return new_obj
