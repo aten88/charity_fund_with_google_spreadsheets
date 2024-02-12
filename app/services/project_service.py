@@ -35,10 +35,12 @@ class CharityProjectService:
         """ Метод обновления проекта. """
 
         await check_charity_project_exists(project_id, self.session)
-        charity_project = await check_fully_invested(project_id, self.session)
+        await check_fully_invested(project_id, self.session)
 
         if obj_in.name is not None:
             await check_name(obj_in.name, self.session)
+
+        charity_project = await project_crud.get(project_id, self.session)
 
         await validate_full_amount(obj_in.dict(exclude_unset=True), charity_project, self.session)
 
@@ -48,7 +50,9 @@ class CharityProjectService:
         """ Метод удаления проекта. """
 
         await check_fully_and_invested_amounts(project_id, self.session)
-        charity_project = await check_charity_project_exists(project_id, self.session)
+        await check_charity_project_exists(project_id, self.session)
+
+        charity_project = await project_crud.get(project_id, self.session)
 
         return await project_crud.remove(charity_project, self.session)
 
