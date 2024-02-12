@@ -21,15 +21,6 @@ async def check_name(project_name: str, session: AsyncSession):
         )
 
 
-async def check_description(project_description: str, session: AsyncSession):
-    """ Валидатор для проверки описания. """
-    if not project_description:
-        raise HTTPException(
-            status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-            detail='Описание проекта не может быть пустым!'
-        )
-
-
 async def check_charity_project_exists(project_id: int, session: AsyncSession):
     """ Проверяет наличие проекта. """
     charity_project = await project_crud.get(project_id, session)
@@ -47,15 +38,6 @@ async def check_fully_invested(project_id: int, session: AsyncSession):
         raise HTTPException(
             status_code=HTTPStatus.BAD_REQUEST,
             detail='Закрытый проект нельзя редактировать!'
-        )
-
-
-async def validate_full_amount(update_data, db_obj, session: AsyncSession):
-    """ Проверяет поле full_amount. """
-    if 'full_amount' in update_data and update_data['full_amount'] < db_obj.invested_amount:
-        raise HTTPException(
-            status_code=HTTPStatus.BAD_REQUEST,
-            detail='Сумма проекта не может быть меньше инвестированной суммы!'
         )
 
 

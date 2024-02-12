@@ -1,3 +1,6 @@
+from http import HTTPStatus
+
+from fastapi import HTTPException
 from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -9,10 +12,28 @@ from app.models.donation import Donation
 
 from app.services.investment_service import investment_process
 from app.services.validators import (
-    check_name, check_description, check_charity_project_exists,
-    check_fully_invested, validate_full_amount, check_fully_and_invested_amounts,
+    check_name, check_charity_project_exists,
+    check_fully_invested, check_fully_and_invested_amounts,
 )
 from app.schemas.charity_project import CharityProjectCreate, CharityProjectUpdate
+
+
+async def validate_full_amount(update_data, db_obj):
+    """ Проверяет поле full_amount. """
+    if 'full_amount' in update_data and update_data['full_amount'] < db_obj.invested_amount:
+        raise HTTPException(
+            status_code=HTTPStatus.BAD_REQUEST,
+            detail='Сумма проекта не может быть меньше инвестированной суммы!'
+        )
+
+
+async def check_description(project_description: str):
+    """ Валидатор для проверки описания. """
+    if not project_description:
+        raise HTTPException(
+            status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
+            detail='Описание проекта не может быть пустым!'
+        )
 
 
 class CharityProjectService:
@@ -25,7 +46,7 @@ class CharityProjectService:
         """ Метод создания проекта. """
 
         await check_name(charity_project.name, self.session)
-        await check_description(charity_project.description, self.session)
+        await check_description(charity_project.description)
 
         new_project = await project_crud.create(charity_project, self.session)
 
@@ -42,7 +63,7 @@ class CharityProjectService:
 
         charity_project = await project_crud.get(project_id, self.session)
 
-        await validate_full_amount(obj_in.dict(exclude_unset=True), charity_project, self.session)
+        await validate_full_amount(obj_in.dict(exclude_unset=True), charity_project)
 
         return await project_crud.update(charity_project, obj_in, self.session)
 
