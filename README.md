@@ -19,7 +19,8 @@
 
 ## Установка и запуск проекта
 - Скачать репозиторий
-git clone git@github.com:aten88/cat_charity_fund.git
+git clone git@github.com:aten88/charity_fund_with_google_spreadsheets
+.git
 - В корневом каталоге создайте файл *.env* и добавьте в него данные (при необходимости):
 
 ```
