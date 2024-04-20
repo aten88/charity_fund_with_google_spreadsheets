@@ -1,27 +1,21 @@
-# Проект благотворительного фонда
-
-## Возможности проекта
-
+# Проект благотворительного фонда с отчетом в гугл-таблицe.
+## Описание проекта:
+Данный проект позволяет открывать фонды пожертвований, вносить суммы пожертвований, закрывать фонды автоматически при достижении необходимой суммы, автоматически переносить остаток пожертвований в незакрытый фонд. В проекте реализованы механизмы авторизации и предоставления прав пользователям в зависимости от роли.
+## Возможности проекта:
 - Создание администратором благотворительных проектов
 - Внесение пожертвований зарегистрированными пользователями
 - Автоматическое инвестирование поступающих средств в открытые проекты
 - Регистрация пользователей реализовано при помощи FastAPI Users
 - Возможность получить отчет о проектах в Google Sheets
 
-## Технологии
+#### Стек проекта: Python 3.9, FastAPI 0.78.0, SQLAlchemy 1.4.36, pydantic 1.9.1, Alembic 1.7.7, Google API.
 
-- Python 3.9
-- FastAPI 0.78.0
-- SQLAlchemy 1.4.36
-- pydantic 1.9.1
-- Alembic 1.7.7
-- Google API
-
-## Установка и запуск проекта
-- Скачать репозиторий
-git clone git@github.com:aten88/charity_fund_with_google_spreadsheets.git
+## Установка и запуск проекта:
+- Клонировать репозиторий локально:
+   ```
+   git clone git@github.com:aten88/charity_fund_with_google_spreadsheets.git
+   ```
 - В корневом каталоге создайте файл *.env* и добавьте в него данные (при необходимости):
-
 ```
 APP_TITLE=Some Fund Name                            # Название фонда
 APP_DESCRIPTION=Some description                    # Описание фонда
@@ -31,53 +25,43 @@ FIRST_SUPERUSER_EMAIL=some_superuser@mail.ru        # Почта для супе
 FIRST_SUPERUSER_PASSWORD=SomeXXXSECRETPass##**      # Пароль для суперюзера по умолчанию(при желании)
 ```
 - Установите и активируйте виртуальное окружение:
-
   ```
-  py3.9 -m venv venv
-
-  Windows:
+  python -m venv venv
+  ```
+  - Windows:
+    ```
     source/venv/scripts/activate
-  Linux/Mac OS:
+    ```
+  - Linux/Mac OS:
+    ```
     source/venv/bin/activate
-  ```
+    ```
 
 - Установите зависимости:
-
   ```
   pip install -r requirements.txt
   ```
-
 - Создайте миграции:
-
 ```
 alembic revision --autogenerate -m "First migration" 
 ```
-
 - Примените миграции:
-
-```shell
-alembic upgrade head
-```
-
+  ```
+  shell alembic upgrade head
+  ```
 - Запустите проект:
+  ```
+  shell uvicorn app.main:app  --reload
+  ```
+## Документации проекта:
 
-```shell
-uvicorn app.main:app  --reload
-```
-
-## Документации проекта
-
-При запущенном проекте откройте одну из ссылкок в браузере:
-
-Swagger:
-
-```shell
-http://127.0.0.1:8000/docs
-```
-Redoc:
-
-```shell
-http://127.0.0.1:8000/redoc
-```
-## Автор
-Алексей Тен.
+- При запущенном проекте откройте одну из ссылкок в браузере:
+    - Swagger:
+    - ```
+      shell http://127.0.0.1:8000/docs
+      ```
+    - Redoc:
+      ```
+      shell http://127.0.0.1:8000/redoc
+      ```
+### Автор: Алексей Тен.
